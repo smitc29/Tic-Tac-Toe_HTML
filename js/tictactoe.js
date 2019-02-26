@@ -1,6 +1,7 @@
 /* eslint-env browser */
 /* eslint-disable no-console */ //Enables console output
 
+/* Reaction is called whenever the player clicks on a box, or enters recursion if Autoplay is active for the current player */
 function Reaction(space)
 {
     // Compile 2D array of board, X right, Y down
@@ -50,11 +51,13 @@ function Reaction(space)
         FadeLose(board, "O");
     }
     
+    // This should only trigger if there is a tie
     if(turn == 10)
     {
         document.getElementById("Message").textContent = "Draw! Play again?";   
     }
     
+    // Change inner HTML to reflect current turn
     turn = turn.toString();
     document.getElementById("Counter").textContent = turn;
     
@@ -73,6 +76,7 @@ function Reaction(space)
     
 } // End of function Reaction
 
+/* Gathers list of webelements 'Box' from HTML, then sorts the list into a 3x3 grid */
 function GatherBoard()
 {
     var list = document.getElementsByClassName("box");
@@ -90,12 +94,15 @@ function GatherBoard()
     return board;
 } // End of function GatherBoard
 
+/* WinCheck is called within Reaction to determine if a any victory conditions have been meet (ie there's 3 Xs or Os in a row, column, or diagonal) */
 function WinCheck(board)
 {
     var check = false;
     var letter = "X";
+    
+/* Run through the entire grid with X and Os to see if there's 3 in a row */
 for(var count = 0; count < 2; count++)
-    {
+{
         if(count == 1) // Second run through use 'O'
             letter = "O";
         
@@ -124,11 +131,12 @@ else if(board[0][2].classList.contains(letter) && board[1][1].classList.contains
 
         
         
-} // End of 2run For loop
+} // End of 2nd run For loop
       
     return check;
 } // End of function WinCheck
 
+/* FadeLose is a purely aesthetic function that fades all boxes that weren't a part of the winning player's plays */
 function FadeLose(board, winner)
 {
     for(var y = 0; y < 3; y++)
@@ -143,6 +151,7 @@ function FadeLose(board, winner)
         } // End of double For loop 
 } // End of function FadeLose
 
+/* ResetBoard clears all boxes of X/O values and sets the turn counter to 1; resets most HTML to when the page first loaded */
 function ResetBoard()
 {
     var list = document.getElementsByClassName("box");
@@ -157,6 +166,7 @@ function ResetBoard()
     
 } // End of function ResetBoard
 
+/* getValidMove is only used in Autoplay to force the computer to make a random move instead of a human player */
 function getValidMove()
 {
     var list = document.getElementsByClassName("box");
